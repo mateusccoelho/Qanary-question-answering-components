@@ -36,7 +36,7 @@
                             <module>qanary_component-NER-Dandelion</module>
                             <module>qanary_component-NED-Dandelion</module>
                             <module>qanary_component-NER-tagme</module>
-                            <!-- <module>qanary_component-NED-tagme</module> --> 
+                            <!-- <module>qanary_component-NED-tagme</module> -->
                             <module>qanary_component-NER-ambiverse</module>
                             <module>qanary_component-NER-Aylien</module>
                             <module>qanary_component-NED-Aylien</module>

@@ -13,6 +13,8 @@ import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import eu.wdaqua.qanary.commons.QanaryUtils;
+import eu.wdaqua.qanary.commons.QanaryQuestion;
 import eu.wdaqua.qanary.commons.QanaryMessage;
 import eu.wdaqua.qanary.component.QanaryComponent;
 
@@ -31,7 +33,7 @@ public class DBpediaSpotlightNERD extends QanaryComponent {
 	 * component
 	 */
 	@Override
-	public QanaryMessage process(QanaryMessage myQanaryMessage) {
+	public QanaryMessage process(QanaryMessage myQanaryMessage) throws Exception {
         long startTime = System.currentTimeMillis();
         org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
 
@@ -66,17 +68,19 @@ public class DBpediaSpotlightNERD extends QanaryComponent {
             InputStream is = connection.getInputStream();
             Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
             String request_content = s.hasNext() ? s.next() : "";
+            logger.info("request content is: {}", request_content);
 
             // parse JSON
             JSONObject json = new JSONObject(request_content);
             JSONArray resources = json.getJSONArray("Resources");
             for(int i = 0; i < resources.length(); i++) {
-                JSONObject resource = arr.getJSONObject(i);
+                JSONObject resource = resources.getJSONObject(i);
                 String uri = resource.getString("@URI");
                 String surface = resource.getString("@surfaceForm");
                 String offset = resource.getString("@offset");
-                int start = Integer.parseInt(offset)
-                int end = surface.length() + Integer.parseInt(offset)
+                int start = Integer.parseInt(offset);
+                int end = surface.length() + Integer.parseInt(offset);
+                logger.info("resource {}: {} {} {}", i, uri, start, end);
 
                 // push each resource found by dbpedia spotlight into the Qanary KB
                 String sparql = "PREFIX qa: <http://www.wdaqua.eu/qa#> " //
